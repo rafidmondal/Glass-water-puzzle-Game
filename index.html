@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-site-verification" content="04Iccv3ZqlAfU3TeqdRVtJubMmkhUMxA2sDJNxoRLD8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Water Sort Puzzle</title>
+  <script>
+  atOptions = {
+    'key' : '9ef2b791dd4ce29f88613916d8ecb089',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/9ef2b791dd4ce29f88613916d8ecb089/invoke.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07091a;--surface:#0f1628;--surface2:#1a2240;
+  --accent:#00d4ff;--accent2:#7c3aed;--gold:#ffd700;
+  --green:#10b981;--red:#ef4444;--text:#e2e8f0;--text2:#94a3b8;
+  --glass:rgba(255,255,255,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;overflow-x:hidden;}
+body{
+  background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse at 15% 50%,rgba(124,58,237,.1) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 15%,rgba(0,212,255,.08) 0%,transparent 55%),
+    radial-gradient(ellipse at 50% 95%,rgba(0,100,200,.06) 0%,transparent 50%);
+}
+
+/* ─── RAXZEN BADGE ─── */
+#rxbadge{
+  position:fixed;top:10px;left:50%;transform:translateX(-50%);
+  z-index:1000;cursor:pointer;animation:bFloat 3s ease-in-out infinite;
+}
+#rxbadge .bi{
+  background:linear-gradient(135deg,rgba(0,8,28,.97),rgba(18,0,55,.97));
+  border:1.5px solid rgba(0,212,255,.7);border-radius:22px;
+  padding:4px 16px 4px 12px;font-family:'Orbitron',sans-serif;font-size:11px;
+  font-weight:700;letter-spacing:2.5px;color:var(--accent);
+  box-shadow:0 0 16px rgba(0,212,255,.55),0 0 32px rgba(0,212,255,.18),inset 0 0 10px rgba(0,212,255,.06);
+  text-shadow:0 0 12px rgba(0,212,255,.9);
+  display:flex;align-items:center;gap:7px;transition:all .3s;
+}
+#rxbadge:hover .bi{box-shadow:0 0 30px rgba(0,212,255,.9),0 0 55px rgba(0,212,255,.32);}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--accent);animation:bpulse 1.5s ease-in-out infinite;}
+@keyframes bFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+@keyframes bpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.35)}}
+
+/* ─── RAXZEN MODAL ─── */
+#rxmodal{display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);justify-content:center;align-items:center;}
+#rxmodal.show{display:flex;}
+.rxbox{
+  background:linear-gradient(135deg,#050c1e,#0e0422);
+  border:1px solid rgba(0,212,255,.42);border-radius:26px;padding:34px;
+  max-width:340px;width:90%;text-align:center;
+  box-shadow:0 0 65px rgba(0,212,255,.22),0 0 110px rgba(124,58,237,.14);
+  animation:mIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes mIn{from{transform:scale(.65);opacity:0}to{transform:scale(1);opacity:1}}
+.rxbox h2{font-family:'Orbitron',sans-serif;font-size:30px;color:var(--accent);text-shadow:0 0 20px var(--accent);letter-spacing:4px;margin-bottom:8px;}
+.rxbox p{color:var(--text2);font-size:13px;margin-bottom:22px;line-height:1.65;}
+.rxbox a{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;text-decoration:none;padding:11px 28px;border-radius:13px;font-weight:700;font-size:14px;box-shadow:0 0 20px rgba(0,212,255,.42);transition:all .3s;margin-bottom:12px;}
+.rxbox a:hover{box-shadow:0 0 32px rgba(0,212,255,.75);transform:scale(1.05);}
+.rxclose{display:block;color:var(--text2);font-size:12px;cursor:pointer;background:none;border:none;font-family:inherit;margin-top:2px;}
+.rxclose:hover{color:var(--text);}
+
+/* ─── SCREENS ─── */
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;}
+.screen.active{display:flex;}
+
+/* ─── HOME ─── */
+#home-screen{justify-content:center;padding:72px 20px 40px;gap:24px;text-align:center;}
+.glogo{animation:lAnim .9s cubic-bezier(.34,1.56,.64,1);}
+@keyframes lAnim{from{transform:scale(0) rotate(-18deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.glogo h1{
+  font-family:'Orbitron',sans-serif;font-size:clamp(22px,6vw,36px);font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--accent2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(0,212,255,.55));letter-spacing:2px;
+}
+.glogo p{color:var(--text2);font-size:13px;margin-top:5px;}
+
+/* Preview canvas tubes */
+#previewCanvas{border-radius:12px;}
+
+.stats-row{display:flex;gap:16px;justify-content:center;}
+.sc{background:var(--glass);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 18px;min-width:80px;text-align:center;backdrop-filter:blur(10px);}
+.sc .v{font-family:'Orbitron',sans-serif;font-size:20px;color:var(--accent);text-shadow:0 0 10px var(--accent);}
+.sc .l{font-size:10px;color:var(--text2);margin-top:2px;}
+
+.level-select{width:100%;max-width:380px;}
+.level-select h3{font-size:12px;color:var(--text2);text-align:center;margin-bottom:11px;letter-spacing:1px;text-transform:uppercase;}
+.lgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;}
+.lbtn{
+  aspect-ratio:1;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);
+  background:var(--surface);color:var(--text);font-family:'Orbitron',sans-serif;
+  font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.lbtn.done{background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(16,185,129,.07));border-color:var(--green);color:var(--green);}
+.lbtn.locked{opacity:.28;cursor:not-allowed;}
+.lbtn.cur{background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(124,58,237,.18));border-color:var(--accent);color:var(--accent);animation:cpulse 2s ease-in-out infinite;}
+@keyframes cpulse{0%,100%{box-shadow:0 0 10px rgba(0,212,255,.3)}50%{box-shadow:0 0 20px rgba(0,212,255,.65)}}
+.lbtn:hover:not(.locked){transform:scale(1.1);}
+.lbtn .st{position:absolute;top:2px;right:2px;font-size:7px;}
+.lbtn[data-tier="1"]{border-color:rgba(16,185,129,.3);}
+.lbtn[data-tier="2"]{border-color:rgba(59,130,246,.3);}
+.lbtn[data-tier="3"]{border-color:rgba(245,158,11,.3);}
+.lbtn[data-tier="4"]{border-color:rgba(239,68,68,.3);}
+.lbtn[data-tier="5"]{border-color:rgba(168,85,247,.35);}
+.lbtn[data-tier="6"]{border-color:rgba(255,215,0,.4);background:linear-gradient(135deg,rgba(255,215,0,.06),rgba(255,140,0,.04));}
+
+.btnP{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;
+  border-radius:16px;color:#fff;font-family:'Nunito',sans-serif;font-size:16px;
+  font-weight:800;padding:14px 40px;cursor:pointer;
+  box-shadow:0 0 26px rgba(0,212,255,.42),0 4px 16px rgba(0,0,0,.35);
+  transition:all .2s;letter-spacing:1px;
+}
+.btnP:hover{transform:scale(1.05);box-shadow:0 0 36px rgba(0,212,255,.65);}
+.btnP:active{transform:scale(.97);}
+.btnS{
+  background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,140,0,.09));
+  border:1.5px solid rgba(255,215,0,.45);border-radius:15px;color:var(--gold);
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
+  padding:11px 26px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;
+}
+.btnS:hover{background:linear-gradient(135deg,rgba(255,215,0,.22),rgba(255,140,0,.16));transform:scale(1.03);}
+.hbtns{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;}
+
+/* ─── GAME SCREEN ─── */
+#game-screen{padding:58px 12px 12px;gap:0;overflow:hidden;}
+
+.ghdr{
+  width:100%;max-width:440px;display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;background:var(--glass);border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;backdrop-filter:blur(10px);margin-bottom:8px;
+}
+.glv .num{font-family:'Orbitron',sans-serif;font-size:17px;color:var(--accent);font-weight:900;}
+.glv .sub{font-size:9px;color:var(--text2);max-width:68px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.gmv{text-align:center;}
+.gmv .mn{font-family:'Orbitron',sans-serif;font-size:18px;color:var(--gold);}
+.gmv .ml{font-size:9px;color:var(--text2);}
+.gcoin{display:flex;align-items:center;gap:5px;font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);}
+.gctrl{display:flex;gap:6px;}
+.cbtn{width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:var(--surface);color:var(--text2);font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.cbtn:hover{background:var(--surface2);color:var(--text);transform:scale(1.1);}
+
+/* TIMER BAR */
+#timer-bar-wrap{
+  width:100%;max-width:440px;height:28px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;overflow:hidden;position:relative;margin-bottom:8px;
+}
+#timer-bar{
+  height:100%;border-radius:14px;
+  background:linear-gradient(90deg,#10b981,#3b82f6,#f59e0b,#ef4444);
+  background-size:300% 100%;
+  transition:width .9s linear,background-position .9s linear;
+  box-shadow:0 0 10px rgba(59,130,246,.4);
+}
+#timer-bar.warning{animation:timerWarn .4s ease-in-out infinite;}
+@keyframes timerWarn{0%,100%{box-shadow:0 0 10px rgba(239,68,68,.5)}50%{box-shadow:0 0 24px rgba(239,68,68,1)}}
+#timer-txt{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.8);pointer-events:none;
+}
+
+.diff-banner{
+  width:100%;max-width:440px;border-radius:12px;padding:5px 14px;
+  font-size:11px;text-align:center;font-weight:700;letter-spacing:.5px;margin-bottom:8px;
+}
+
+/* TUBE CANVAS */
+#game-canvas-wrap{
+  width:100%;max-width:440px;flex:1;
+  display:flex;justify-content:center;align-items:center;
+  position:relative;
+}
+#gameCanvas{
+  border-radius:16px;cursor:pointer;
+  display:block;
+  touch-action:none;
+}
+
+/* TIME OUT OVERLAY */
+#timeout-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(10px);
+  justify-content:center;align-items:center;
+}
+#timeout-overlay.show{display:flex;}
+.tobox{
+  background:linear-gradient(135deg,#1a0505,#250000);
+  border:1px solid rgba(239,68,68,.5);border-radius:26px;
+  padding:34px 30px;text-align:center;max-width:300px;width:90%;
+  box-shadow:0 0 55px rgba(239,68,68,.3);
+  animation:mIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+.tobox h2{font-family:'Orbitron',sans-serif;font-size:22px;color:var(--red);text-shadow:0 0 16px var(--red);margin-bottom:6px;}
+.tobox p{color:var(--text2);font-size:13px;margin-bottom:20px;}
+.to-btns{display:flex;gap:9px;justify-content:center;}
+.to-btns button{padding:10px 20px;border-radius:12px;border:none;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.to-try{background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;}
+.to-home{background:var(--surface2);color:var(--text);border:1px solid rgba(255,255,255,.1);}
+.to-btns button:hover{transform:scale(1.06);}
+
+.game-btm{width:100%;max-width:440px;padding:10px 4px;display:flex;gap:8px;justify-content:center;}
+.abtn{border-radius:14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:9px 15px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;border:1.5px solid;}
+.abtn.tube{background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,140,0,.08));border-color:rgba(255,215,0,.38);color:var(--gold);}
+.abtn.tube:hover{background:linear-gradient(135deg,rgba(255,215,0,.22),rgba(255,140,0,.16));transform:scale(1.03);}
+.abtn.hint{background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(0,212,255,.08));border-color:rgba(124,58,237,.38);color:#a78bfa;}
+.abtn.hint:hover{background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(0,212,255,.16));transform:scale(1.03);}
+
+/* ─── SHOP ─── */
+#shop-screen{padding:76px 20px 36px;gap:18px;}
+.shdr{text-align:center;}
+.shdr h2{font-family:'Orbitron',sans-serif;font-size:22px;color:var(--gold);text-shadow:0 0 14px rgba(255,215,0,.5);}
+.shdr p{color:var(--text2);font-size:12px;margin-top:4px;}
+.scoin{background:var(--glass);border:1.5px solid rgba(255,215,0,.3);border-radius:14px;padding:11px 22px;display:flex;align-items:center;gap:9px;font-family:'Orbitron',sans-serif;font-size:18px;color:var(--gold);}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:380px;}
+.sitem{background:var(--surface);border:1.5px solid rgba(255,255,255,.07);border-radius:18px;padding:15px;text-align:center;cursor:pointer;transition:all .22s;}
+.sitem:hover{transform:scale(1.04);border-color:rgba(255,255,255,.18);}
+.sitem .ic{font-size:30px;margin-bottom:6px;}
+.sitem .nm{font-weight:700;font-size:13px;margin-bottom:3px;}
+.sitem .ds{font-size:10px;color:var(--text2);margin-bottom:10px;}
+.sitem .pr{background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,140,0,.07));border:1px solid rgba(255,215,0,.35);border-radius:9px;padding:4px 10px;font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);display:inline-flex;align-items:center;gap:3px;}
+.bkbtn{background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:var(--text2);padding:10px 20px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;transition:all .2s;display:flex;align-items:center;gap:6px;}
+.bkbtn:hover{background:var(--surface2);color:var(--text);}
+
+/* ─── WIN OVERLAY ─── */
+#winOv{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.84);backdrop-filter:blur(9px);justify-content:center;align-items:center;}
+#winOv.show{display:flex;}
+.winbox{background:linear-gradient(135deg,#050c1e,#0c031f);border:1px solid rgba(0,212,255,.42);border-radius:27px;padding:34px 28px;text-align:center;max-width:310px;width:90%;box-shadow:0 0 60px rgba(0,212,255,.22);animation:mIn .5s cubic-bezier(.34,1.56,.64,1);}
+.we{font-size:58px;margin-bottom:8px;display:block;animation:wspin .6s ease-out;}
+@keyframes wspin{from{transform:rotate(-360deg) scale(0)}to{transform:rotate(0) scale(1)}}
+.winbox h2{font-family:'Orbitron',sans-serif;font-size:23px;color:var(--gold);text-shadow:0 0 14px var(--gold);margin-bottom:5px;}
+.winbox p{color:var(--text2);font-size:13px;margin-bottom:14px;}
+.wcoin{font-family:'Orbitron',sans-serif;font-size:17px;color:var(--gold);margin-bottom:14px;}
+.wbtns{display:flex;gap:9px;justify-content:center;}
+.wbtns button{padding:10px 20px;border-radius:12px;border:none;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.wn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
+.wh{background:var(--surface2);color:var(--text);border:1px solid rgba(255,255,255,.1);}
+.wbtns button:hover{transform:scale(1.06);}
+
+/* confetti */
+.cf{position:fixed;border-radius:2px;animation:cfall 2.5s ease-in forwards;pointer-events:none;z-index:700;}
+@keyframes cfall{0%{opacity:1;transform:translateY(-20px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+
+/* toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(4,8,22,.94);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:9px 18px;color:var(--text);font-size:12px;font-weight:600;z-index:4000;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;}
+
+/* particle bg */
+#pcv{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.3;}
+</style>
+</head>
+<body>
+<canvas id="pcv"></canvas>
+
+<!-- RAXZEN BADGE -->
+<div id="rxbadge" onclick="openRaxzen()">
+  <div class="bi"><div class="bdot"></div>RAXZEN</div>
+</div>
+
+<!-- RAXZEN MODAL -->
+<div id="rxmodal">
+  <div class="rxbox">
+    <h2>RAXZEN</h2>
+    <p>Explore the official Raxzen platform — games, tools, and amazing digital experiences.</p>
+    <a href="https://raxzenapp-p9ksao39.manus.space/" target="_blank">🚀 Visit Raxzen</a>
+    <button class="rxclose" onclick="closeRaxzen()">Close</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- TIME OUT OVERLAY -->
+<div id="timeout-overlay">
+  <div class="tobox">
+    <div style="font-size:52px;margin-bottom:10px">⏰</div>
+    <h2>TIME'S UP!</h2>
+    <p id="to-msg">You ran out of time! Try again?</p>
+    <div class="to-btns">
+      <button class="to-home" onclick="goHome()">🏠 Home</button>
+      <button class="to-try" onclick="restartLevel()">↺ Retry</button>
+    </div>
+  </div>
+</div>
+
+<!-- WIN OVERLAY -->
+<div id="winOv">
+  <div class="winbox">
+    <span class="we">🎉</span>
+    <h2>LEVEL CLEAR!</h2>
+    <p id="win-msg">Perfect! All colors sorted!</p>
+    <div class="wcoin" id="win-coins">+50 🪙</div>
+    <div class="wbtns">
+      <button class="wh" onclick="goHome()">🏠 Home</button>
+      <button class="wn" onclick="nextLevel()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOME SCREEN -->
+<div id="home-screen" class="screen active">
+  <div class="glogo">
+    <h1>💧 WATER SORT</h1>
+    <p>Sort the colors. Master the tubes.</p>
+  </div>
+  <canvas id="previewCanvas" width="220" height="110"></canvas>
+  <div class="stats-row">
+    <div class="sc"><div class="v" id="h-lv">1</div><div class="l">LEVEL</div></div>
+    <div class="sc"><div class="v" id="h-cn">150</div><div class="l">COINS 🪙</div></div>
+    <div class="sc"><div class="v" id="h-dn">0</div><div class="l">DONE ✓</div></div>
+  </div>
+  <div class="level-select">
+    <h3>Select Level</h3>
+    <div class="lgrid" id="lgrid"></div>
+  </div>
+  <div class="hbtns">
+    <button class="btnP" onclick="startCurrent()">▶ Play Now</button>
+    <button class="btnS" onclick="showShop()">🛒 Shop</button>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" class="screen">
+  <div class="ghdr">
+    <div class="glv">
+      <div class="num" id="g-lnum">L1</div>
+      <div class="sub" id="g-lname">Warm Up</div>
+    </div>
+    <div class="gmv">
+      <div class="mn" id="g-mv">0</div>
+      <div class="ml">MOVES</div>
+    </div>
+    <div class="gcoin">🪙<span id="g-cn">0</span></div>
+    <div class="gctrl">
+      <button class="cbtn" onclick="undoMove()">↩</button>
+      <button class="cbtn" onclick="restartLevel()">↺</button>
+      <button class="cbtn" onclick="goHome()">⌂</button>
+    </div>
+  </div>
+  <div id="timer-bar-wrap">
+    <div id="timer-bar" style="width:100%;background-position:0% 50%"></div>
+    <div id="timer-txt">1:00</div>
+  </div>
+  <div class="diff-banner" id="diff-banner">🎯 Sort all colors!</div>
+  <div id="game-canvas-wrap">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+  <div class="game-btm">
+    <button class="abtn tube" onclick="buyExtraTube()">+ Extra Tube <span style="font-size:10px;opacity:.7">(30🪙)</span></button>
+    <button class="abtn hint" onclick="useHint()">💡 Hint <span style="font-size:10px;opacity:.7">(10🪙)</span></button>
+  </div>
+</div>
+
+<!-- SHOP SCREEN -->
+<div id="shop-screen" class="screen">
+  <div class="shdr"><h2>🛒 SHOP</h2><p>Spend your coins wisely</p></div>
+  <div class="scoin">🪙 <span id="sc-cn">0</span> Coins</div>
+  <div class="sgrid">
+    <div class="sitem" onclick="buyItem('extra_tube',30)"><div class="ic">🧪</div><div class="nm">Extra Tube</div><div class="ds">Add empty tube in level</div><div class="pr">🪙 30</div></div>
+    <div class="sitem" onclick="buyItem('hint_pack',50)"><div class="ic">💡</div><div class="nm">Hint Pack</div><div class="ds">5 hints for tough puzzles</div><div class="pr">🪙 50</div></div>
+    <div class="sitem" onclick="buyItem('undo_pack',20)"><div class="ic">↩</div><div class="nm">Undo Pack</div><div class="ds">10 extra undos</div><div class="pr">🪙 20</div></div>
+    <div class="sitem" onclick="buyItem('neon',80)"><div class="ic">🌈</div><div class="nm">Neon Skins</div><div class="ds">Glowing neon color palette</div><div class="pr">🪙 80</div></div>
+    <div class="sitem" onclick="buyItem('coinboost',100)"><div class="ic">🪙🪙</div><div class="nm">Coin Boost</div><div class="ds">2× coins for 10 levels</div><div class="pr">🪙 100</div></div>
+    <div class="sitem" onclick="buyItem('galaxy',60)"><div class="ic">🌌</div><div class="nm">Galaxy Theme</div><div class="ds">Deep space background</div><div class="pr">🪙 60</div></div>
+  </div>
+  <button class="bkbtn" onclick="goHome()">← Back</button>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONSTANTS
+══════════════════════════════════════════════ */
+const PALETTE = [
+  '#e74c3c','#2980b9','#27ae60','#f39c12',
+  '#8e44ad','#d35400','#16a085','#c0392b',
+  '#2471a3','#1e8449','#d4ac0d','#76448a',
+  '#ca6f1e','#148f77','#1a5276','#922b21'
+];
+const NEON = [
+  '#ff2d55','#00b4d8','#00f593','#ffd60a',
+  '#bf5af2','#ff6b35','#06d6a0','#ff006e',
+  '#4cc9f0','#2dc653','#ffbe0b','#9d4edd',
+  '#fb8500','#0077b6','#43aa8b','#e63946'
+];
+const NAMES=[
+  "Warm Up","Easy Flow","Color Drip","Gentle Mix","Sweet Blend",
+  "Mind Trickle","Flowing Chaos","Cascade","Puzzle Pool","Color Storm",
+  "Deep Current","Tangled","Labyrinth","Whirlpool","Vortex",
+  "Chaos Surge","Crystal Maze","Rainbow Rush","Prism Break","Neon Flux",
+  "Quantum Flow","Mirage","Illusion","Infinity","The Gauntlet",
+  "Champion","Master Class","Ultra Wave","Legendary","★ IMPOSSIBLE ★"
+];
+// tier 1=Easy 2=Med 3=Hard 4=BeatHard 5=Ultra 6=UltraPro
+const TIER=[1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6];
+const TINFO=[null,
+  {label:"🌱 EASY",        bg:"rgba(16,185,129,.12)", border:"rgba(16,185,129,.35)", color:"#34d399"},
+  {label:"🔵 MEDIUM",      bg:"rgba(59,130,246,.12)", border:"rgba(59,130,246,.35)", color:"#60a5fa"},
+  {label:"🔥 HARD",        bg:"rgba(245,158,11,.12)", border:"rgba(245,158,11,.35)", color:"#fbbf24"},
+  {label:"💀 BEAT HARD",   bg:"rgba(239,68,68,.13)",  border:"rgba(239,68,68,.38)",  color:"#f87171"},
+  {label:"⚡ ULTRA",       bg:"rgba(168,85,247,.14)", border:"rgba(168,85,247,.42)", color:"#c084fc"},
+  {label:"👑 ULTRA PRO",   bg:"rgba(255,215,0,.1)",   border:"rgba(255,215,0,.45)",  color:"#ffd700"},
+];
+// Time per level (seconds) — increases per tier
+const LEVEL_TIME = [
+  60,60,60,60,60,          // 1-5  Easy   1m
+  45,45,42,40,40,          // 6-10 Med    40-45s
+  35,33,32,30,30,          // 11-15 Hard  30-35s
+  28,26,25,24,23,          // 16-20 BeatH 23-28s
+  22,21,20,19,18,          // 21-25 Ultra 18-22s
+  17,16,15,14,13           // 26-30 UltraPro 13-17s
+];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let S={coins:150,curLevel:1,done:[],neon:false,coinBoost:0};
+let G={tubes:[],sel:-1,moves:0,hist:[],initTubes:[],level:0,extraAdded:false,animating:false,
+       hintTube:-1, hintTarget:-1};
+
+// Timer state
+let T={total:60,left:0,interval:null,running:false};
+
+function loadS(){try{const d=localStorage.getItem('ws3');if(d)Object.assign(S,JSON.parse(d));}catch(e){}}
+function saveS(){try{localStorage.setItem('ws3',JSON.stringify(S));}catch(e){}}
+loadS();
+
+/* ══════════════════════════════════════════════
+   LEVEL GENERATION
+══════════════════════════════════════════════ */
+function seededRng(seed){
+  let s=seed>>>0;
+  return ()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296;};
+}
+function tierColors(n){
+  // tier 1:3c  2:4c  3:5c  4:6c  5:7c  6:8-9c
+  const t=TIER[n-1]||6;
+  const map={1:3,2:4,3:5,4:6,5:7,6:Math.min(8+Math.floor((n-26)*0.25),10)};
+  return map[t]||3;
+}
+function generateLevel(n){
+  const rng=seededRng(n*99991+777);
+  const numC=tierColors(n);
+  const empty=TIER[n-1]===1?2:1;
+  const pal=S.neon?NEON:PALETTE;
+  const colors=pal.slice(0,numC);
+  let pool=[];
+  for(let c of colors) for(let i=0;i<4;i++) pool.push(c);
+  // Stronger shuffle for higher tiers
+  const passes=1+TIER[n-1];
+  for(let p=0;p<passes;p++)
+    for(let i=pool.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  let tubes=[];
+  for(let i=0;i<numC;i++) tubes.push(pool.slice(i*4,(i+1)*4));
+  for(let i=0;i<empty;i++) tubes.push([]);
+  return tubes;
+}
+
+/* ══════════════════════════════════════════════
+   CANVAS TUBE RENDERER — High Quality
+══════════════════════════════════════════════ */
+const TUBE_W = 46;   // inner width of tube
+const TUBE_H = 132;  // height
+const TUBE_R = 22;   // bottom corner radius
+const TUBE_PAD = 8;  // padding around tube in cell
+const CELL_W = TUBE_W + TUBE_PAD * 2;
+const CELL_H = TUBE_H + TUBE_PAD * 2 + 20; // extra for lift
+const LAYER_H = TUBE_H / 4;
+
+let canvas, ctx, canvasLayout=[];
+
+function initCanvas(){
+  canvas = document.getElementById('gameCanvas');
+  ctx = canvas.getContext('2d');
+  canvas.addEventListener('click', onCanvasClick);
+  canvas.addEventListener('touchend', e=>{
+    e.preventDefault();
+    const t=e.changedTouches[0];
+    const r=canvas.getBoundingClientRect();
+    onCanvasClick({clientX:t.clientX,clientY:t.clientY,boundingRect:r});
+  },{passive:false});
+}
+
+function layoutTubes(){
+  const numT = G.tubes.length;
+  const maxW = Math.min(window.innerWidth - 24, 440);
+  const cols = numT <= 5 ? numT : numT <= 8 ? Math.ceil(numT/2) : Math.ceil(numT/2);
+  const rows = Math.ceil(numT / cols);
+  const dpr = window.devicePixelRatio || 1;
+
+  // fit tube width
+  let tw = Math.min(TUBE_W, Math.floor((maxW - 10) / cols) - TUBE_PAD*2 - 4);
+  tw = Math.max(32, tw);
+  const th = Math.round(tw * (TUBE_H/TUBE_W));
+  const cellW = tw + TUBE_PAD*2;
+  const cellH = th + TUBE_PAD*2 + 22;
+  const totalW = cols * cellW;
+  const totalH = rows * cellH;
+
+  canvas.style.width = totalW + 'px';
+  canvas.style.height = totalH + 'px';
+  canvas.width = totalW * dpr;
+  canvas.height = totalH * dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  canvasLayout = [];
+  G.tubes.forEach((_,i)=>{
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const cx = col * cellW + TUBE_PAD;
+    const cy = row * cellH + TUBE_PAD + 16;
+    canvasLayout.push({x:cx, y:cy, w:tw, h:th, r:tw/2});
+  });
+}
+
+function hexToRgb(hex){
+  const n=parseInt(hex.replace('#',''),16);
+  return {r:(n>>16)&255,g:(n>>8)&255,b:n&255};
+}
+function lightenHex(hex,a){
+  const c=hexToRgb(hex);
+  return `rgba(${Math.min(255,c.r+a)},${Math.min(255,c.g+a)},${Math.min(255,c.b+a)},1)`;
+}
+function darkenHex(hex,a){
+  const c=hexToRgb(hex);
+  return `rgba(${Math.max(0,c.r-a)},${Math.max(0,c.g-a)},${Math.max(0,c.b-a)},1)`;
+}
+
+function drawTube(idx, liftAmt=0){
+  const lay = canvasLayout[idx];
+  if(!lay) return;
+  const {x,y,w,h,r} = lay;
+  const tube = G.tubes[idx];
+  const isSel = G.sel === idx;
+  const isSolved = isTubeDone(tube);
+  const isHintFrom = G.hintTube === idx;
+  const isHintTo   = G.hintTarget === idx;
+  const layerH = h / 4;
+
+  ctx.save();
+  ctx.translate(0, -liftAmt);
+
+  // ── 1. GLASS BODY BACKGROUND ──
+  // Draw tube shape path
+  function tubePath(){
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y + h - r);
+    ctx.quadraticCurveTo(x, y+h, x+r, y+h);
+    ctx.lineTo(x+w-r, y+h);
+    ctx.quadraticCurveTo(x+w, y+h, x+w, y+h-r);
+    ctx.lineTo(x+w, y);
+    ctx.closePath();
+  }
+
+  // Glass background gradient
+  const bgGrad = ctx.createLinearGradient(x,y,x+w,y);
+  bgGrad.addColorStop(0,   'rgba(255,255,255,0.09)');
+  bgGrad.addColorStop(0.4, 'rgba(255,255,255,0.04)');
+  bgGrad.addColorStop(1,   'rgba(255,255,255,0.07)');
+  tubePath();
+  ctx.fillStyle = bgGrad;
+  ctx.fill();
+
+  // ── 2. LIQUID LAYERS ──
+  const filled = tube.length;
+  for(let li=0; li<filled; li++){
+    const color = tube[li];
+    const lyY = y + h - (li+1)*layerH;
+    const lyBot = y + h - li*layerH;
+    const rgb = hexToRgb(color);
+
+    ctx.save();
+    // clip to tube
+    tubePath();
+    ctx.clip();
+
+    // Draw liquid block
+    const liqGrad = ctx.createLinearGradient(x, lyY, x+w, lyBot);
+    liqGrad.addColorStop(0,   `rgba(${rgb.r+50},${rgb.g+40},${rgb.b+40},0.95)`);
+    liqGrad.addColorStop(0.3, `rgba(${rgb.r+20},${rgb.g+15},${rgb.b+15},0.98)`);
+    liqGrad.addColorStop(1,   `rgba(${Math.max(0,rgb.r-20)},${Math.max(0,rgb.g-20)},${Math.max(0,rgb.b-20)},1)`);
+    ctx.fillStyle = liqGrad;
+
+    if(li === filled-1){
+      // Top layer: draw a smooth wavy top surface
+      const wAmp = 2.5;
+      const wLen = w/3;
+      ctx.beginPath();
+      ctx.moveTo(x, lyY + wAmp);
+      // bezier wave across the top
+      ctx.bezierCurveTo(x+wLen, lyY-wAmp,  x+wLen*2, lyY+wAmp,  x+wLen*3, lyY);
+      ctx.lineTo(x+w, lyBot);
+      ctx.lineTo(x, lyBot);
+      ctx.closePath();
+      ctx.fill();
+
+      // Shimmery top highlight on liquid surface
+      const shimGrad = ctx.createLinearGradient(x, lyY-3, x+w, lyY+3);
+      shimGrad.addColorStop(0, 'rgba(255,255,255,0.0)');
+      shimGrad.addColorStop(0.35,'rgba(255,255,255,0.32)');
+      shimGrad.addColorStop(0.65,'rgba(255,255,255,0.18)');
+      shimGrad.addColorStop(1, 'rgba(255,255,255,0.0)');
+      ctx.fillStyle = shimGrad;
+      ctx.beginPath();
+      ctx.ellipse(x+w/2, lyY+1, w*0.42, 3.5, 0, 0, Math.PI*2);
+      ctx.fill();
+
+    } else {
+      // Middle/bottom layers — flat top, subtle separator line
+      ctx.fillRect(x, lyY, w, layerH + 0.5);
+      // thin separator between layers
+      ctx.fillStyle = 'rgba(0,0,0,0.14)';
+      ctx.fillRect(x, lyBot-1, w, 1.5);
+    }
+
+    // Side ambient occlusion on liquid
+    const sideGrad = ctx.createLinearGradient(x,0,x+w,0);
+    sideGrad.addColorStop(0, 'rgba(0,0,0,0.18)');
+    sideGrad.addColorStop(0.15,'rgba(0,0,0,0.0)');
+    sideGrad.addColorStop(0.85,'rgba(0,0,0,0.0)');
+    sideGrad.addColorStop(1,'rgba(0,0,0,0.14)');
+    ctx.fillStyle = sideGrad;
+    ctx.fillRect(x, lyY, w, layerH);
+
+    ctx.restore();
+  }
+
+  // ── 3. GLASS TUBE BORDER + GLOW ──
+  tubePath();
+  // Outer glow for selected/solved/hint
+  if(isSel || isHintFrom){
+    ctx.shadowColor = isHintFrom ? '#ffd700' : '#00d4ff';
+    ctx.shadowBlur = 18;
+  } else if(isSolved && tube.length===4){
+    ctx.shadowColor = '#10b981';
+    ctx.shadowBlur = 14;
+  } else if(isHintTo){
+    ctx.shadowColor = '#a78bfa';
+    ctx.shadowBlur = 18;
+  }
+  ctx.strokeStyle = isSel ? 'rgba(0,212,255,0.85)'
+    : isHintFrom ? 'rgba(255,215,0,0.85)'
+    : isHintTo   ? 'rgba(167,139,250,0.85)'
+    : isSolved && tube.length===4 ? 'rgba(16,185,129,0.75)'
+    : 'rgba(255,255,255,0.22)';
+  ctx.lineWidth = (isSel||isHintFrom||isHintTo) ? 2.5 : 1.5;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // ── 4. GLASS HIGHLIGHTS (front face shine) ──
+  // Left edge specular
+  ctx.save();
+  tubePath();
+  ctx.clip();
+  const shine = ctx.createLinearGradient(x, y, x+w*0.28, y);
+  shine.addColorStop(0,'rgba(255,255,255,0.22)');
+  shine.addColorStop(0.5,'rgba(255,255,255,0.07)');
+  shine.addColorStop(1,'rgba(255,255,255,0.0)');
+  ctx.fillStyle = shine;
+  ctx.fillRect(x, y, w*0.28, h);
+  // Right edge subtle
+  const shine2 = ctx.createLinearGradient(x+w*0.72, y, x+w, y);
+  shine2.addColorStop(0,'rgba(255,255,255,0.0)');
+  shine2.addColorStop(1,'rgba(255,255,255,0.1)');
+  ctx.fillStyle = shine2;
+  ctx.fillRect(x+w*0.72, y, w*0.28, h);
+  // Top rim gleam
+  ctx.fillStyle='rgba(255,255,255,0.12)';
+  ctx.fillRect(x+2, y, w-4, 3);
+  ctx.restore();
+
+  // ── 5. SOLVED CHECKMARK ──
+  if(isSolved && tube.length===4){
+    ctx.fillStyle='rgba(16,185,129,0.92)';
+    ctx.font=`bold ${Math.round(w*0.45)}px Nunito`;
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.shadowColor='#10b981';
+    ctx.shadowBlur=10;
+    ctx.fillText('✓', x+w/2, y+h+11);
+    ctx.shadowBlur=0;
+  }
+
+  // ── 6. TUBE NUMBER (small) ──
+  ctx.fillStyle='rgba(148,163,184,0.45)';
+  ctx.font=`bold ${Math.round(w*0.28)}px Orbitron`;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(idx+1, x+w/2, y-10);
+
+  ctx.restore();
+}
+
+/* Pour liquid drop animation */
+let pourAnims = [];
+function drawPourAnims(){
+  pourAnims = pourAnims.filter(a=>{
+    a.t += 0.06;
+    if(a.t > 1) return false;
+    const px = a.x0 + (a.x1-a.x0)*a.t;
+    const py = a.y0 + (a.y1-a.y0)*a.t + 30*Math.sin(a.t*Math.PI)*(-1);
+    const alpha = 1 - a.t*0.8;
+    const size = a.size * (1 - a.t*0.5);
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const rgb = hexToRgb(a.color);
+    const g = ctx.createRadialGradient(px,py,0,px,py,size);
+    g.addColorStop(0,`rgba(${rgb.r+60},${rgb.g+50},${rgb.b+50},1)`);
+    g.addColorStop(0.5,`rgba(${rgb.r+20},${rgb.g+15},${rgb.b+15},0.95)`);
+    g.addColorStop(1,`rgba(${rgb.r},${rgb.g},${rgb.b},0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(px, py, size, size*1.3, 0, 0, Math.PI*2);
+    ctx.fill();
+    // small trailing drops
+    for(let d=1;d<=3;d++){
+      const dp=a.t-d*0.08;
+      if(dp<0) continue;
+      const dx=a.x0+(a.x1-a.x0)*dp;
+      const dy=a.y0+(a.y1-a.y0)*dp+30*Math.sin(dp*Math.PI)*(-1);
+      ctx.globalAlpha=alpha*(0.5-d*0.12);
+      ctx.fillStyle=a.color;
+      ctx.beginPath();
+      ctx.arc(dx,dy,size*0.35,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.restore();
+    return true;
+  });
+}
+
+/* Lift animation state */
+let liftMap = {};   // tubeIdx -> 0..18 (pixels lifted)
+let liftTarget = {};
+
+function updateLifts(){
+  let dirty=false;
+  G.tubes.forEach((_,i)=>{
+    const target = (G.sel===i) ? 18 : 0;
+    liftTarget[i] = target;
+    const cur = liftMap[i] || 0;
+    if(Math.abs(cur-target)>0.5){
+      liftMap[i] = cur + (target-cur)*0.22;
+      dirty=true;
+    } else {
+      liftMap[i]=target;
+    }
+  });
+  return dirty;
+}
+
+let rafId=null;
+function drawAll(){
+  if(!ctx) return;
+  ctx.clearRect(0, 0, canvas.width/window.devicePixelRatio, canvas.height/window.devicePixelRatio);
+  const liftsDirty = updateLifts();
+  G.tubes.forEach((_,i)=> drawTube(i, liftMap[i]||0));
+  drawPourAnims();
+  if(liftsDirty || pourAnims.length>0){
+    rafId = requestAnimationFrame(drawAll);
+  } else {
+    rafId = null;
+  }
+}
+
+function requestDraw(){
+  if(!rafId) rafId = requestAnimationFrame(drawAll);
+}
+
+/* ══════════════════════════════════════════════
+   CLICK HANDLING
+══════════════════════════════════════════════ */
+function onCanvasClick(e){
+  if(G.animating) return;
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const scaleX = (canvas.width/(window.devicePixelRatio||1)) / rect.width;
+  const scaleY = (canvas.height/(window.devicePixelRatio||1)) / rect.height;
+  const cx = mx*scaleX, cy = my*scaleY;
+
+  let hit = -1;
+  canvasLayout.forEach((lay,i)=>{
+    const liftY = liftMap[i]||0;
+    if(cx>=lay.x && cx<=lay.x+lay.w && cy>=lay.y-liftY-10 && cy<=lay.y+lay.h-liftY+16) hit=i;
+  });
+  if(hit<0) return;
+  selectTube(hit);
+}
+
+function selectTube(idx){
+  if(G.animating) return;
+  G.hintTube=-1; G.hintTarget=-1;
+
+  if(G.sel===-1){
+    if(G.tubes[idx].length===0){toast('Empty tube! Pick one with water.');return;}
+    G.sel=idx;
+    requestDraw();
+  } else {
+    if(G.sel===idx){G.sel=-1;requestDraw();return;}
+    if(canPour(G.sel,idx)){
+      doPour(G.sel,idx);
+    } else {
+      // Shake animation: quick wobble
+      const lay=canvasLayout[idx];
+      if(lay){
+        let shakeT=0;
+        const shakeInterval=setInterval(()=>{
+          shakeT+=1;
+          ctx.save();
+          ctx.clearRect(lay.x-10,lay.y-20,lay.w+20,lay.h+40);
+          ctx.translate(Math.sin(shakeT*1.5)*4,0);
+          drawTube(idx,liftMap[idx]||0);
+          ctx.restore();
+          if(shakeT>8){clearInterval(shakeInterval);requestDraw();}
+        },30);
+      }
+      toast('❌ Cannot pour here!');
+      G.sel=idx;
+      requestDraw();
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════
+   POUR LOGIC
+══════════════════════════════════════════════ */
+function canPour(f,t){
+  const s=G.tubes[f],d=G.tubes[t];
+  if(s.length===0) return false;
+  if(d.length>=4) return false;
+  if(d.length===0) return true;
+  return s[s.length-1]===d[d.length-1];
+}
+function doPour(from,to){
+  G.animating=true;
+  const color=G.tubes[from][G.tubes[from].length-1];
+  const fLay=canvasLayout[from], tLay=canvasLayout[to];
+
+  // Spawn pour drop animations
+  const count=5;
+  for(let i=0;i<count;i++){
+    setTimeout(()=>{
+      pourAnims.push({
+        x0: fLay.x+fLay.w/2 + (Math.random()-.5)*8,
+        y0: fLay.y+(liftMap[from]||0)*(-1) - (18+(liftMap[from]||0)),
+        x1: tLay.x+tLay.w/2 + (Math.random()-.5)*6,
+        y1: tLay.y + tLay.h*0.15,
+        color, t:0, size:6+Math.random()*4
+      });
+      requestDraw();
+    }, i*55);
+  }
+
+  setTimeout(()=>{
+    G.hist.push(G.tubes.map(t=>[...t]));
+    pour(from,to);
+    G.moves++;
+    document.getElementById('g-mv').textContent=G.moves;
+    G.sel=-1;
+    G.animating=false;
+    requestDraw();
+    checkWin();
+  }, count*55+180);
+
+  requestDraw();
+}
+
+function pour(from,to){
+  const color=G.tubes[from][G.tubes[from].length-1];
+  while(G.tubes[from].length>0&&G.tubes[to].length<4&&G.tubes[from][G.tubes[from].length-1]===color){
+    G.tubes[to].push(G.tubes[from].pop());
+  }
+}
+function isTubeDone(tube){
+  if(tube.length===0) return true;
+  if(tube.length!==4) return false;
+  return tube.every(c=>c===tube[0]);
+}
+function checkWin(){
+  if(G.tubes.every(isTubeDone)) setTimeout(showWin,500);
+}
+
+/* ══════════════════════════════════════════════
+   TIMER
+══════════════════════════════════════════════ */
+function startTimer(secs){
+  stopTimer();
+  T.total=secs; T.left=secs; T.running=true;
+  updateTimerUI();
+  T.interval=setInterval(()=>{
+    if(!T.running) return;
+    T.left--;
+    updateTimerUI();
+    if(T.left<=0){ stopTimer(); onTimeOut(); }
+  },1000);
+}
+function stopTimer(){
+  T.running=false;
+  if(T.interval){clearInterval(T.interval);T.interval=null;}
+}
+function updateTimerUI(){
+  const bar=document.getElementById('timer-bar');
+  const txt=document.getElementById('timer-txt');
+  const pct=Math.max(0,T.left/T.total)*100;
+  bar.style.width=pct+'%';
+  // Color shift: green→blue→orange→red via background-position
+  const pos=(1-(T.left/T.total))*100;
+  bar.style.backgroundPosition=pos+'% 50%';
+  const warn=T.left<=10;
+  bar.classList.toggle('warning',warn);
+  const m=Math.floor(T.left/60), s=T.left%60;
+  txt.textContent=(m>0?m+':':(s<=9?'0:':'0:'))+(s<10?'0'+s:s);
+  if(warn) txt.style.color='#fca5a5';
+  else txt.style.color='#fff';
+}
+function onTimeOut(){
+  if(document.getElementById('winOv').classList.contains('show')) return;
+  document.getElementById('to-msg').textContent=`Level ${G.level} — Time's up! You had ${G.moves} moves.`;
+  document.getElementById('timeout-overlay').classList.add('show');
+}
+
+/* ══════════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════════ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goHome(){
+  stopTimer();
+  document.getElementById('winOv').classList.remove('show');
+  document.getElementById('timeout-overlay').classList.remove('show');
+  G.sel=-1;G.animating=false;G.hintTube=-1;G.hintTarget=-1;
+  updateHomeUI();
+  showScreen('home-screen');
+  drawPreview();
+}
+function showShop(){
+  document.getElementById('sc-cn').textContent=S.coins;
+  showScreen('shop-screen');
+}
+function startCurrent(){startLevel(S.curLevel);}
+
+function startLevel(n){
+  stopTimer();
+  document.getElementById('winOv').classList.remove('show');
+  document.getElementById('timeout-overlay').classList.remove('show');
+  const tubes=generateLevel(n);
+  G.tubes=tubes.map(t=>[...t]);
+  G.initTubes=tubes.map(t=>[...t]);
+  G.sel=-1;G.moves=0;G.hist=[];G.level=n;G.extraAdded=false;G.animating=false;
+  G.hintTube=-1;G.hintTarget=-1;
+  liftMap={};liftTarget={};pourAnims=[];
+
+  document.getElementById('g-lnum').textContent='L'+n;
+  document.getElementById('g-lname').textContent=NAMES[n-1]||('Level '+n);
+  document.getElementById('g-mv').textContent=0;
+  updateCoinDisp();
+
+  const tier=TIER[n-1]||6;
+  const ti=TINFO[tier];
+  const db=document.getElementById('diff-banner');
+  db.textContent=ti.label+' — Level '+n+' of 30';
+  db.style.background=ti.bg;db.style.border='1px solid '+ti.border;db.style.color=ti.color;
+
+  showScreen('game-screen');
+
+  // Init canvas after screen shown
+  requestAnimationFrame(()=>{
+    if(!canvas) initCanvas();
+    layoutTubes();
+    requestDraw();
+    // Start timer
+    startTimer(LEVEL_TIME[n-1]||60);
+  });
+}
+
+function restartLevel(){
+  stopTimer();
+  document.getElementById('timeout-overlay').classList.remove('show');
+  G.tubes=G.initTubes.map(t=>[...t]);
+  G.sel=-1;G.moves=0;G.hist=[];G.extraAdded=false;G.animating=false;
+  G.hintTube=-1;G.hintTarget=-1;
+  liftMap={};liftTarget={};pourAnims=[];
+  document.getElementById('g-mv').textContent=0;
+  layoutTubes();
+  requestDraw();
+  startTimer(LEVEL_TIME[G.level-1]||60);
+  toast('↺ Restarted!');
+}
+function undoMove(){
+  if(G.hist.length===0){toast('Nothing to undo!');return;}
+  G.tubes=G.hist.pop().map(t=>[...t]);
+  G.moves=Math.max(0,G.moves-1);
+  G.sel=-1;G.hintTube=-1;G.hintTarget=-1;
+  document.getElementById('g-mv').textContent=G.moves;
+  requestDraw();
+}
+function buyExtraTube(){
+  if(G.extraAdded){toast('Already added!');return;}
+  if(S.coins<30){toast('Need 30🪙!');return;}
+  S.coins-=30;G.tubes.push([]);G.extraAdded=true;
+  saveS();updateCoinDisp();layoutTubes();requestDraw();toast('✅ Extra tube added!');
+}
+function useHint(){
+  if(S.coins<10){toast('Need 10🪙!');return;}
+  for(let f=0;f<G.tubes.length;f++){
+    for(let t=0;t<G.tubes.length;t++){
+      if(f!==t&&canPour(f,t)){
+        S.coins-=10;updateCoinDisp();saveS();
+        G.hintTube=f;G.hintTarget=t;
+        G.sel=-1;
+        requestDraw();
+        toast(`💡 Tube ${f+1} → Tube ${t+1}`);
+        setTimeout(()=>{G.hintTube=-1;G.hintTarget=-1;requestDraw();},2000);
+        return;
+      }
+    }
+  }
+  toast('No hints available! Try restart.');
+}
+function updateCoinDisp(){document.getElementById('g-cn').textContent=S.coins;}
+
+/* ══════════════════════════════════════════════
+   WIN
+══════════════════════════════════════════════ */
+function showWin(){
+  stopTimer();
+  const n=G.level;
+  const base=28+n*4;
+  // Bonus for time left
+  const timeBonus=Math.floor(T.left*0.5);
+  const raw=base+timeBonus;
+  const reward=S.coinBoost>0?raw*2:raw;
+  S.coins+=reward;
+  if(S.coinBoost>0)S.coinBoost--;
+  if(!S.done.includes(n))S.done.push(n);
+  if(S.curLevel===n)S.curLevel=Math.min(n+1,30);
+  saveS();
+  const msgs=["🎉 Perfect! All sorted!","💧 Flawless flow!","🌈 Brilliant!","🧙 Water Wizard!","⭐ Incredible!"];
+  document.getElementById('win-msg').textContent=msgs[n%msgs.length];
+  document.getElementById('win-coins').textContent=`+${reward} 🪙 (${timeBonus>0?'+'+timeBonus+' time bonus':''}`;
+  document.getElementById('winOv').classList.add('show');
+  spawnConfetti();
+}
+function nextLevel(){
+  document.getElementById('winOv').classList.remove('show');
+  if(S.curLevel<=30)startLevel(S.curLevel);
+  else{toast('🏆 All 30 levels done!');goHome();}
+}
+function spawnConfetti(){
+  const cols=['#e74c3c','#2980b9','#27ae60','#f39c12','#8e44ad','#00d4ff','#ffd700','#c084fc'];
+  for(let i=0;i<55;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');
+      el.className='cf';
+      el.style.left=Math.random()*100+'vw';el.style.top='-14px';
+      el.style.background=cols[Math.floor(Math.random()*cols.length)];
+      el.style.animationDelay=Math.random()*.4+'s';
+      el.style.animationDuration=(1.4+Math.random()*1.2)+'s';
+      const sz=5+Math.random()*8;el.style.width=sz+'px';el.style.height=sz+'px';
+      el.style.borderRadius=Math.random()>.5?'50%':'2px';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),3200);
+    },i*25);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   HOME UI
+══════════════════════════════════════════════ */
+function updateHomeUI(){
+  document.getElementById('h-lv').textContent=S.curLevel;
+  document.getElementById('h-cn').textContent=S.coins;
+  document.getElementById('h-dn').textContent=S.done.length;
+  const grid=document.getElementById('lgrid');
+  grid.innerHTML='';
+  for(let i=1;i<=30;i++){
+    const btn=document.createElement('button');
+    btn.className='lbtn';
+    const tier=TIER[i-1]||6;
+    btn.setAttribute('data-tier',tier);
+    const done=S.done.includes(i),cur=i===S.curLevel,locked=i>S.curLevel;
+    if(done)btn.classList.add('done');
+    else if(cur)btn.classList.add('cur');
+    else if(locked)btn.classList.add('locked');
+    btn.textContent=i;
+    if(done)btn.innerHTML+=`<span class="st">⭐</span>`;
+    if(!locked)btn.onclick=()=>startLevel(i);
+    grid.appendChild(btn);
+  }
+}
+
+/* Preview canvas on home */
+function drawPreview(){
+  const cv=document.getElementById('previewCanvas');
+  const c=cv.getContext('2d');
+  const w=cv.width,h=cv.height;
+  c.clearRect(0,0,w,h);
+  const tubes=[[PALETTE[0],PALETTE[1]],[PALETTE[2],PALETTE[0],PALETTE[3]],[PALETTE[1],PALETTE[2]],[]];
+  const tw=30,th=82,tr=15,spacing=50;
+  const startX=(w-tubes.length*spacing)/2+5;
+  tubes.forEach((tube,i)=>{
+    const tx=startX+i*spacing,ty=(h-th)/2+5;
+    // Glass bg
+    c.beginPath();c.moveTo(tx,ty);c.lineTo(tx,ty+th-tr);
+    c.quadraticCurveTo(tx,ty+th,tx+tr,ty+th);
+    c.lineTo(tx+tw-tr,ty+th);c.quadraticCurveTo(tx+tw,ty+th,tx+tw,ty+th-tr);
+    c.lineTo(tx+tw,ty);c.closePath();
+    c.fillStyle='rgba(255,255,255,0.06)';c.fill();
+    // Layers
+    const lh=th/4;
+    tube.forEach((col,li)=>{
+      const rgb=hexToRgb(col);
+      c.save();
+      c.beginPath();c.moveTo(tx,ty);c.lineTo(tx,ty+th-tr);
+      c.quadraticCurveTo(tx,ty+th,tx+tr,ty+th);
+      c.lineTo(tx+tw-tr,ty+th);c.quadraticCurveTo(tx+tw,ty+th,tx+tw,ty+th-tr);
+      c.lineTo(tx+tw,ty);c.closePath();c.clip();
+      const lyY=ty+th-(li+1)*lh;
+      const g=c.createLinearGradient(tx,lyY,tx+tw,lyY+lh);
+      g.addColorStop(0,`rgba(${rgb.r+45},${rgb.g+38},${rgb.b+38},0.96)`);
+      g.addColorStop(1,`rgba(${Math.max(0,rgb.r-18)},${Math.max(0,rgb.g-18)},${Math.max(0,rgb.b-18)},1)`);
+      c.fillStyle=g;c.fillRect(tx,lyY,tw,lh+0.5);
+      if(li===tube.length-1){
+        c.fillStyle='rgba(255,255,255,0.25)';c.beginPath();c.ellipse(tx+tw/2,lyY+1,tw*.3,2.5,0,0,Math.PI*2);c.fill();
+      }
+      c.restore();
+    });
+    // Border
+    c.beginPath();c.moveTo(tx,ty);c.lineTo(tx,ty+th-tr);
+    c.quadraticCurveTo(tx,ty+th,tx+tr,ty+th);
+    c.lineTo(tx+tw-tr,ty+th);c.quadraticCurveTo(tx+tw,ty+th,tx+tw,ty+th-tr);
+    c.lineTo(tx+tw,ty);c.closePath();
+    c.strokeStyle='rgba(255,255,255,0.25)';c.lineWidth=1.5;c.stroke();
+  });
+}
+
+/* ══════════════════════════════════════════════
+   SHOP
+══════════════════════════════════════════════ */
+function buyItem(item,cost){
+  if(S.coins<cost){toast(`Need ${cost}🪙!`);return;}
+  S.coins-=cost;
+  if(item==='neon')S.neon=true;
+  if(item==='coinboost')S.coinBoost=10;
+  if(item==='galaxy')document.body.style.backgroundImage='radial-gradient(ellipse at 50% 0%,rgba(0,20,65,.95) 0%,rgba(5,0,18,.98) 100%)';
+  saveS();
+  document.getElementById('sc-cn').textContent=S.coins;
+  toast(`✅ Purchased! ${S.coins}🪙 left`);
+}
+
+/* ══════════════════════════════════════════════
+   RAXZEN
+══════════════════════════════════════════════ */
+function openRaxzen(){document.getElementById('rxmodal').classList.add('show');}
+function closeRaxzen(){document.getElementById('rxmodal').classList.remove('show');}
+document.getElementById('rxmodal').addEventListener('click',function(e){if(e.target===this)closeRaxzen();});
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+/* ══════════════════════════════════════════════
+   PARTICLE BG
+══════════════════════════════════════════════ */
+function initParticles(){
+  const cv=document.getElementById('pcv'),ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const pts=Array.from({length:22},()=>({
+    x:Math.random()*cv.width,y:Math.random()*cv.height,
+    r:Math.random()*1.8+0.4,
+    vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
+    c:Math.random()>.5?'#00d4ff':'#7c3aed',
+    a:Math.random()*.3+.07
+  }));
+  (function loop(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.globalAlpha=p.a;ctx.fill();});
+    requestAnimationFrame(loop);
+  })();
+}
+
+window.addEventListener('resize',()=>{
+  const cv=document.getElementById('pcv');cv.width=window.innerWidth;cv.height=window.innerHeight;
+  if(document.getElementById('game-screen').classList.contains('active')){layoutTubes();requestDraw();}
+});
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+initCanvas();
+initParticles();
+updateHomeUI();
+drawPreview();
+</script>
+  <script>
+  atOptions = {
+    'key' : '9ef2b791dd4ce29f88613916d8ecb089',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/9ef2b791dd4ce29f88613916d8ecb089/invoke.js"></script>
+</body>
+</html>
